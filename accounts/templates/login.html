@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .login-container {
+        max-width: 380px;
+        margin: 100px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container h2 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #007bff;
+    }
+
+    .login-form {
+        text-align: center;
+    }
+
+    .login-form table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .login-form table tr td {
+        padding: 10px 0;
+        text-align: left;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        width: calc(100% - 24px);
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        background-color: #f8f9fa;
+        transition: border-color 0.3s ease;
+    }
+
+    .login-form input[type="text"]:focus,
+    .login-form input[type="password"]:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+    .login-form input[type="submit"] {
+        width: 100%;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .login-form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .login-form p {
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .login-footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .login-footer a {
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .login-footer a:hover {
+        color: #0056b3;
+    }
+</style>
+
+<div class="login-container">
+    <h2>Bem-vindo ao Sistema</h2>
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <table>
+            {{ login_form.as_table }}
+        </table>
+        <input type="submit" value="Entrar">
+    </form>
+    <div class="login-footer">
+        <p>Não tem uma conta? <a href="register" style="font-weight: bold;">Crie uma agora</a></p>
+    </div>
+</div>
+
+<style>
+    main {
+        margin-bottom: 50px;
+    }
+</style>
+{% endblock %}

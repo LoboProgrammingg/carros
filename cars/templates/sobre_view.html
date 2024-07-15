@@ -1,0 +1,92 @@
+<!-- about_us.html -->
+
+{% extends "base.html" %}
+
+{% block title %}
+  Sobre Mim - Lobo Multimarcas
+{% endblock %}
+
+{% block content %}
+<style>
+  /* Estilos específicos para a página Sobre Nós */
+  .about-section {
+    background-color: #f7f9fc;
+    padding: 50px 0;
+    text-align: center;
+  }
+
+  .about-section h1 {
+    font-size: 2.5rem;
+    color: #0096c7;
+    margin-bottom: 20px;
+  }
+
+  .about-section h4 {
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .team-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
+  }
+
+  .team-member {
+    text-align: center;
+    width: 250px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .team-member h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .team-member p {
+    font-size: 1rem;
+    color: #666;
+  }
+</style>
+
+<div class="about-section">
+  <div class="container">
+    <h1>Sobre Mim</h1>
+    <h4>
+      Olá! Sou Matheus Lobo Camara, um entusiasta da programação especializado em Python, com foco no poderoso framework Django. Minha paixão e expertise estão principalmente no desenvolvimento de soluções robustas no back-end, mas também tenho sólidos conhecimentos em front-end.
+
+Estou aqui para criar um site que não apenas funcione perfeitamente, mas que também impressione visualmente. Como estudante de Engenharia de Software, estou constantemente aprimorando minhas habilidades para entregar projetos de alta qualidade.
+
+Este site serve como meu repertório de habilidades e experiências. Espero que você goste da minha abordagem e do trabalho que estou compartilhando aqui. Obrigado por visitar!
+
+
+    </h4>
+  </div>
+</div>
+
+<div class="team-section">
+  <div class="team-member">
+    <h3>Matheus Lobo Camara</h3>
+    <p>CEO</p>
+  </div>
+  <div class="team-member">
+    <h3>Matheus Lobo Camara</h3>
+    <p>CTO</p>
+  </div>
+  <div class="team-member">
+    <h3>Matheus Lobo Camara</h3>
+    <p>Designer</p>
+  </div>
+</div>
+{% endblock %}

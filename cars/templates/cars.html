@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block content %}
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      transition: border-color 0.3s ease-in-out;
+    }
+
+    input[type="text"]:focus {
+      border-color: #0096c7;
+    }
+
+    button[type="submit"] {
+      background-color: #0096c7;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #007bb5;
+    }
+
+    .car-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .car-card {
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .car-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .car-card-content {
+      padding: 20px;
+    }
+
+    .car-card h2 {
+      font-size: 1.5rem;
+      margin: 0 0 10px;
+      color: black;
+    }
+
+    .car-card p {
+      font-size: 1rem;
+      margin: 0 0 10px;
+      color: #666;
+    }
+
+    .car-card .price {
+      font-size: 1.2rem;
+      color: green;
+      font-weight: bold;
+    }
+
+    .no-photo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      background-color: #e0e0e0;
+      color: #888;
+      font-size: 1rem;
+    }
+
+    .no-results {
+      font-size: 1.2rem;
+      color: #888;
+      text-align: center;
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+  <div class="container">
+    <div class="form-container">
+      <form method="GET" action="{% url 'cars_list' %}">
+        <input type="text" name="search" placeholder="Buscar carro...">
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+
+    <div class="car-grid">
+      {% if cars %}
+        {% for car in cars %}
+          <a href="{% url 'car_detail' car.pk %}" style="text-decoration: none;">
+            <div class="car-card">
+              {% if car.photo %}
+                <img src="{{ car.photo.url }}" alt="{{ car.model }} - {{ car.brand }}">
+              {% else %}
+                <div class="no-photo">Foto não disponível</div>
+              {% endif %}
+              <div class="car-card-content">
+                <h2>{{ car.brand }} {{ car.model }}</h2>
+                <p>{{ car.factory_year }}</p>
+                <p class="price">R$ {{ car.value|floatformat:"0g" }}</p>
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        <div class="no-results">
+          <p>Nenhum carro encontrado.</p>
+          <p>Tente outra busca ou <a href="{% url 'new_car' %}">cadastre um novo carro</a>.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

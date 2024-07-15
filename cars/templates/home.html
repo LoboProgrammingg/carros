@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section text-center py-2 mb-1">
+    <div class="container">
+        <h1 class="display-4 text-white">Bem-vindo à Lobo Multimarcas</h1>
+        <p class="lead text-white">A sua melhor opção para comprar e vender carros de qualidade, com confiança e atendimento excepcional a cada passo.</p>
+    </div>
+</div>
+
+<div class="container my-2">
+    <div class="row">
+        <div class="row text-center mb-2">
+            <div class="col-md-12">
+                <div class="service-card p-2">
+                    <h2 class="mb-2">Ainda Não Tem Registro?</h2>
+                    <p>Crie sua conta hoje mesmo e aproveite todas as vantagens de ser um cliente da Lobo Multimarcas!</p>
+                    <a href="{% url 'register' %}" class="btn btn-primary btn-lg mt-1 shadow">Registrar-se</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 text-center mb-2">
+            <div class="service-card p-2">
+                <h2 class="mb-2">LISTA DE CARROS</h2>
+                <p>Está pronto para encontrar o carro dos seus sonhos? Confira nossa lista de veículos e faça uma escolha inteligente! Com uma variedade de modelos e preços acessíveis, temos certeza de que você encontrará o carro perfeito que atende às suas necessidades e desejos!</p>
+                <a href="{% url 'cars_list' %}" class="btn btn-primary btn-lg mt-1 shadow">Ver Carros</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center mb-2">
+        <div class="col-md-12">
+            <div class="service-card p-2">
+                <h2 class="mb-2">Quer Vender Seu Carro?</h2>
+                <p>Se você tem um carro que gostaria de vender, entre em contato conosco!</p>
+                <a href="{% url 'new_car' %}" class="btn btn-primary btn-lg mt-1 shadow">Adicionar Carro para Venda</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-2">
+        <h2 class="mb-2">Depoimentos de Clientes</h2>
+        <div class="blockquote-container">
+            <blockquote class="blockquote">
+                <p>“A experiência foi incrível! O atendimento é excepcional e encontrei o carro perfeito para mim.”</p>
+                <footer class="blockquote-footer"> - João Silva</footer>
+            </blockquote>
+            <blockquote class="blockquote">
+                <p>“Recomendo! A equipe é muito profissional e sempre disposta a ajudar.”</p>
+                <footer class="blockquote-footer"> - Maria Oliveira</footer>
+            </blockquote>
+            <blockquote class="blockquote">
+                <p>“Compra fácil e rápida! Estou muito feliz com o meu novo carro.”</p>
+                <footer class="blockquote-footer"> - Pedro Marcondes</footer>
+            </blockquote>
+            <blockquote class="blockquote">
+                <p>“Excelente atendimento! Super recomendo a Lobo Multimarcas.”</p>
+                <footer class="blockquote-footer"> - Ana Paula</footer>
+            </blockquote>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f4f8;
+        line-height: 1.6;
+    }
+
+    .hero-section {
+        background-image: url('path/to/your/image.jpg');
+        background-size: cover;
+        background-position: center;
+        color: #ffffff;
+        border-radius: 0 0 20px 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        position: relative;
+        padding: 30px 15px; 
+        margin-bottom: 10px;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0 0 20px 20px;
+        z-index: 1;
+    }
+
+    .service-card {
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        z-index: 2;
+        padding: 15px;
+        border: 1px solid #e6e6e6;
+        text-align: center;
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    h1, h2 {
+        text-align: center;
+        color: black;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    p {
+        text-align: center;
+        color: grey;
+        line-height: 1.7;
+        font-size: 1.1rem; /* Aumenta o tamanho da fonte */
+        padding: 10px; /* Adiciona um pouco de padding */
+        border-radius: 8px; /* Arredondar os cantos */
+        margin: 10px 0; /* Margem para espaçamento */
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    .btn-lg {
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+    }
+
+    .blockquote-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+    blockquote {
+        border-left: 5px solid #007bff;
+        padding-left: 20px;
+        margin: 5px auto;
+        font-style: italic;
+        color: #333;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    blockquote::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: -10px;
+        width: 20px;
+        height: 20px;
+        background: #007bff;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+        .btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .hero-section {
+            padding: 80px 15px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}

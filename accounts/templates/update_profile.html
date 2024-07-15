@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Atualizar Perfil</h2>
+    <p>Olá, <strong>{{ request.user.username }}</strong>! Use o formulário abaixo para atualizar seu perfil.</p>
+
+    <form method="post" class="profile-update-form">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <button type="submit" name="user_form_submit" class="btn btn-primary">Salvar Alterações</button>
+    </form>
+
+    <h2>Alterar Senha</h2>
+    <form method="post" action="{% url 'update_profile' %}" class="password-change-form">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit" name="password_form_submit" class="btn btn-primary">Alterar Senha</button>
+    </form>
+</div>
+
+<style>
+    /* Estilos específicos para o formulário de atualização de perfil */
+    .container {
+        max-width: 500px;
+        margin: 20px auto;
+        background-color: #f9f9f9;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2, legend {
+        text-align: center;
+        color: #333;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .invalid-feedback {
+        color: red;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}

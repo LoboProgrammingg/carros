@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block content %}
+<style>
+  /* Estilos para a lista de comentários */
+  .comments {
+    margin-top: 20px;
+  }
+
+  .comments h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .comments ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .comments li {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+
+  .comments li:last-child {
+    border-bottom: none; /* Remove a borda inferior do último comentário */
+  }
+
+  .comments li strong {
+    font-weight: bold;
+    color: #007bff; /* Cor do nome de usuário */
+  }
+
+  .comments li small {
+    color: #aaa;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+
+  .comments li .stars {
+    color: #f7d85c; /* Cor das estrelas preenchidas */
+    font-size: 20px; /* Tamanho das estrelas */
+  }
+
+  .comments li p {
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* Estilos adicionais */
+  .finance-result {
+    margin-top: 20px;
+  }
+
+  .finance-result .alert-success {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .rating {
+    display: inline-block;
+    unicode-bidi: bidi-override;
+    font-size: 0;
+  }
+
+  .rating input {
+    display: none;
+  }
+
+  .rating label {
+    float: right;
+    color: #ddd;
+    cursor: pointer;
+  }
+
+  .rating label:before {
+    content: '\2605';
+    margin-right: 5px;
+    color: #ddd; /* Cor das estrelas não preenchidas */
+  }
+
+  .rating input:checked ~ label {
+    color: #f7d85c; /* Cor das estrelas preenchidas */
+  }
+
+  .rating input:checked ~ label:before {
+    color: #f7d85c; /* Cor das estrelas preenchidas */
+  }
+</style>
+<div class="container">
+  <div class="car-card">
+    {% if object.photo %}
+    <img src="{{ object.photo.url }}" alt="{{ object.model }} - {{ object.brand }}">
+    {% else %}
+    <div class="no-photo">Foto não disponível</div>
+    {% endif %}
+    <div class="car-card-content">
+      <h2>{{ object.brand }} {{ object.model }}</h2>
+      <div class="car-details">
+        <div>
+          <p><strong>Ano de fabricação:</strong> {{ object.factory_year }}</p>
+        </div>
+        <div>
+          <p><strong>Ano do modelo:</strong> {{ object.model_year }}</p>
+        </div>
+        <div>
+          <p><strong>Placa:</strong> {{ object.plate }}</p>
+        </div>
+        <div>
+          <p class="price">R$ {{ object.value|format_price }}</p>
+        </div>
+      </div>
+      {% if object.bio %}
+      <p><strong>Descrição:</strong> {{ object.bio }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+  <div class="buttons-container">
+    <a href="{% url 'car_update' pk=object.pk %}" class="btn">Editar</a>
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+  </div>
+  {% endif %}
+
+  <!-- Formulário para calcular financiamento -->
+  <div class="finance-form">
+    <h3>Calculadora de Financiamento</h3>
+    <form id="finance-form" method="POST" action="{% url 'calculate_finance' pk=object.pk %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_price">Valor do Carro (R$)</label>
+        <input type="text" id="id_price" name="price" class="form-control" value="{{ object.value }}" readonly required>
+      </div>
+      <div class="form-group">
+        <label for="id_interest_rate">Taxa de Juros Anual (%)</label>
+        <input type="number" id="id_interest_rate" name="interest_rate" class="form-control" step="0.01" value="10" readonly required>
+      </div>
+      <div class="form-group">
+        <label for="id_loan_term">Prazo do Financiamento (em anos)</label>
+        <input type="number" id="id_loan_term" name="loan_term" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Calcular Pagamento Mensal</button>
+    </form>
+    <div id="messages" class="messages"></div>
+    <div id="finance-result" class="finance-result"></div> <!-- Elemento para exibir resultado -->
+  </div>
+
+  <!-- Formulário para adicionar comentário -->
+  <div class="comment-form">
+    <h3>Adicionar Comentário</h3>
+    <form id="comment-form" method="POST" action="{% url 'add_car_review' car_id=object.pk %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_comment">Seu Comentário:</label>
+        <textarea id="id_comment" name="comment" class="form-control" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="id_rating">Avaliação:</label>
+        <div class="rating">
+          <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Excelente">5 stars</label>
+          <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Muito bom">4 stars</label>
+          <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Bom">3 stars</label>
+          <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Regular">2 stars</label>
+          <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Ruim">1 star</label>
+        </div>
+      </div>
+      <button type="submit" class="btn">Enviar Comentário</button>
+    </form>
+  </div>
+
+  <!-- Lista de Comentários -->
+  <div class="comments">
+    <h3>Comentários</h3>
+    <ul>
+      {% if object.reviews.all %}
+        {% for review in object.reviews.all %}
+          <li>
+            <strong>{{ review.user.username }}</strong>
+            <small>{{ review.created_at|date:"d/m/Y H:i" }}</small><br>
+            <div class="stars">
+              
+            </div>
+            <p>{{ review.comment }}</p>
+          </li>
+        {% endfor %}
+      {% else %}
+        <p>Ainda não há comentários para este carro.</p>
+      {% endif %}
+    </ul>
+  </div>
+
+</div> <!-- Fechamento da div container -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const financeForm = document.getElementById('finance-form');
+    financeForm.addEventListener('submit', function (event) {
+      event.preventDefault(); // Evita o envio padrão do formulário
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = ''; // Limpa mensagens anteriores
+
+      const alertDiv = document.createElement('div');
+      alertDiv.classList.add('alert', 'alert-info');
+      alertDiv.textContent = 'Calculando...';
+
+      messagesDiv.appendChild(alertDiv);
+
+      // Simulação de cálculo por 2 segundos
+      setTimeout(function () {
+        alertDiv.style.display = 'none';
+
+        // Cálculo do resultado do financiamento
+        const financeResultDiv = document.getElementById('finance-result');
+        const price = parseFloat(document.getElementById('id_price').value);
+        const annualInterestRate = parseFloat(document.getElementById('id_interest_rate').value);
+        const loanTerm = parseFloat(document.getElementById('id_loan_term').value);
+
+        const totalPrice = price * (1 + (annualInterestRate / 100));
+        const monthlyPayment = totalPrice / (loanTerm * 12);
+
+        financeResultDiv.innerHTML = `
+          <div class="alert alert-success">
+            O pagamento mensal estimado é de R$ ${monthlyPayment.toFixed(2)}.
+          </div>
+        `;
+      }, 2000); // 2 segundos para simular o cálculo
+
+    });
+
+    const commentForm = document.getElementById('comment-form');
+    commentForm.addEventListener('submit', function (event) {
+      event.preventDefault(); // Evita o envio padrão do formulário
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.innerHTML = ''; // Limpa mensagens anteriores
+
+      const alertDiv = document.createElement('div');
+      alertDiv.classList.add('alert', 'alert-info');
+      alertDiv.textContent = 'Enviando comentário...';
+
+      messagesDiv.appendChild(alertDiv);
+
+      setTimeout(function () {
+        alertDiv.style.display = 'none';
+        commentForm.submit(); // Envio manual após 2 segundos
+      }, 2000); // 2 segundos para simular o envio
+    });
+  });
+</script>
+
+{% endblock %}
