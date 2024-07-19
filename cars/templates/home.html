@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="hero-section">
-    <div class="container text-center py-5 hero-text"> <!-- Adicionada a classe hero-text -->
+    <div class="container text-center py-5 hero-text">
         <h1 class="display-4"></h1>
     </div>
 </div>
@@ -67,13 +67,14 @@
     .hero-section {
         background-image: url('{% static "images/LOBO.png" %}');
         background-size: cover;
-        background-position: bottom;
+        background-position: center;
         background-color: rgba(0, 0, 0, 0.1);
         height: 75vh;
         color: #ffffff;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         display: flex;
         align-items: flex-end;
+        justify-content: center;
         margin-bottom: 30px;
     }
 
@@ -187,7 +188,11 @@
         }
 
         .hero-section {
-            padding: 80px 15px;
+            height: 50vh;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
         }
     }
 </style>
