@@ -20,10 +20,10 @@ httpcore==1.0.5
 httplib2==0.22.0
 httpx==0.27.0
 idna==3.7
+ngrok==1.3.0
 pillow==10.4.0
 proto-plus==1.24.0
 protobuf==4.25.3
-psycopg2==2.9.9
 psycopg2-binary==2.9.9
 pyasn1==0.6.0
 pyasn1_modules==0.4.0
