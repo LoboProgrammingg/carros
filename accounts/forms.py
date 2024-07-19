@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm as DjangoPasswordChangeForm
+from django.contrib.auth.forms import UserChangeForm
 
 class UserCreationWithEmailForm(UserCreationForm):
     email = forms.EmailField(label="Email")
@@ -20,12 +21,20 @@ class UserCreationWithEmailForm(UserCreationForm):
 
         return cleaned_data
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
+class UserUpdateForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
 
 class PasswordChangeForm(DjangoPasswordChangeForm):
     new_password1 = forms.CharField(
@@ -43,6 +52,8 @@ class PasswordChangeForm(DjangoPasswordChangeForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super().__init__(user, *args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
+        self.fields['old_password'].label = "Senha Atual"
 
     def clean_old_password(self):
         old_password = self.cleaned_data.get("old_password")
@@ -55,4 +66,3 @@ class PasswordChangeForm(DjangoPasswordChangeForm):
         self.user.set_password(password)
         if commit:
             self.user.save()
-        return self.user

@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %}
+  Registro - Lobo Multimarcas
+{% endblock %}
+
 {% block content %}
 <style>
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f8f9fa;
+        background-color: rgba(0, 0, 0, 0.3);
     }
 
     .register-container {
@@ -13,32 +17,33 @@
         padding: 30px;
         background: #fff;
         border-radius: 10px;
-        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
 
     .register-container h2 {
         margin-bottom: 20px;
         text-align: center;
-        color: #007bff;
+        color: #143d59;
     }
 
     .register-form {
         text-align: center;
     }
 
-    .form-group {
-        margin-bottom: 15px;
+    .register-form table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
     }
 
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        color: #333;
+    .register-form table tr td {
+        padding: 10px 0;
+        text-align: left;
     }
 
-    .form-group input[type="text"],
-    .form-group input[type="password"],
-    .form-group input[type="email"] {
+    .register-form input[type="text"],
+    .register-form input[type="email"],
+    .register-form input[type="password"] {
         width: calc(100% - 24px);
         padding: 12px;
         margin: 8px 0;
@@ -50,16 +55,16 @@
         transition: border-color 0.3s ease;
     }
 
-    .form-group input[type="text"]:focus,
-    .form-group input[type="password"]:focus,
-    .form-group input[type="email"]:focus {
+    .register-form input[type="text"]:focus,
+    .register-form input[type="email"]:focus,
+    .register-form input[type="password"]:focus {
         outline: none;
-        border-color: #007bff;
+        border-color: #143d59;
     }
 
-    .form-group input[type="submit"] {
+    .register-form input[type="submit"] {
         width: 100%;
-        background-color: #007bff;
+        background-color: #143d59;
         color: #fff;
         border: none;
         padding: 12px;
@@ -69,68 +74,107 @@
         transition: background-color 0.3s ease;
     }
 
-    .form-group input[type="submit"]:hover {
-        background-color: #0056b3;
+    .register-form input[type="submit"]:hover {
+        background-color: #0f2a3e;
+    }
+
+    .register-form p {
+        color: #143d59;
+        margin-bottom: 10px;
     }
 
     .register-footer {
         margin-top: 20px;
         text-align: center;
-        color: #6c757d;
+        color: #143d59;
     }
 
     .register-footer a {
-        color: #007bff;
+        color: #143d59;
         text-decoration: none;
         transition: color 0.3s ease;
     }
 
     .register-footer a:hover {
-        color: #0056b3;
+        color: #0f2a3e;
+    }
+
+    /* Estilo para mensagens */
+    .messages {
+        background-color: #eafaf1;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        list-style-type: none;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .messages.error {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+    .messages.success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .messages li {
+        margin: 0;
+        padding: 5px 0;
+    }
+
+    /* Garantir que nenhum campo esteja com display: none */
+    .register-form input {
+        display: block; /* Garantir que os inputs estejam visíveis */
     }
 </style>
 
 <div class="register-container">
-    <h2>Cadastro de Usuário</h2>
+    <h2>Registre-se</h2>
+
+    {% if messages %}
+      <ul class="messages {% if messages|length == 1 %}{{ messages.0.tags }}{% endif %}">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
     <form method="post" class="register-form">
         {% csrf_token %}
-
-        <div class="form-group">
-            {{ user_form.username.errors }}
-            <label for="{{ user_form.username.id_for_label }}">Usuário:</label>
-            {{ user_form.username }}
-        </div>
-
-        <div class="form-group">
-            {{ user_form.email.errors }}
-            <label for="{{ user_form.email.id_for_label }}">Email:</label>
-            {{ user_form.email }}
-        </div>
-
-        <div class="form-group">
-            {{ user_form.confirm_email.errors }}
-            <label for="{{ user_form.confirm_email.id_for_label }}">Confirmação de Email:</label>
-            {{ user_form.confirm_email }}
-        </div>
-
-        <div class="form-group">
-            {{ user_form.password1.errors }}
-            <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
-            {{ user_form.password1 }}
-        </div>
-
-        <div class="form-group">
-            {{ user_form.password2.errors }}
-            <label for="{{ user_form.password2.id_for_label }}">Confirmação de Senha:</label>
-            {{ user_form.password2 }}
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Cadastrar">
-        </div>
+        <table>
+            <tr>
+                <td><label for="id_username">Username:</label></td>
+                <td><input type="text" name="username" required id="id_username" value="{{ user_form.username.value }}"></td>
+            </tr>
+            <tr>
+                <td><label for="id_email">Email:</label></td>
+                <td><input type="email" name="email" required id="id_email" value="{{ user_form.email.value }}"></td>
+            </tr>
+            <tr>
+                <td><label for="id_email2">Confirme o Email:</label></td>
+                <td><input type="email" name="confirm_email" required id="id_email2" value="{{ user_form.confirm_email.value }}"></td>
+            </tr>
+            <tr>
+                <td><label for="id_password1">Senha:</label></td>
+                <td><input type="password" name="password1" required id="id_password1"></td>
+            </tr>
+            <tr>
+                <td><label for="id_password2">Confirme a Senha:</label></td>
+                <td><input type="password" name="password2" required id="id_password2"></td>
+            </tr>
+        </table>
+        <input type="submit" value="Registrar">
     </form>
+
     <div class="register-footer">
-        <p>Já possui uma conta? <a href="login" style="font-weight: bold;">Faça login agora</a></p>
+        <p>Já tem uma conta? <a href="{% url 'login' %}" style="font-weight: bold;">Faça login</a></p>
     </div>
 </div>
 

@@ -1,6 +1,8 @@
-from django.db import models
+from django.db import models, migrations
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth import get_user_model
+from accounts.models import CustomUser
 
 class Brand(models.Model):
     id = models.AutoField(primary_key=True)
@@ -8,8 +10,11 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+    
+User = get_user_model()
 
 class Car(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     id = models.AutoField(primary_key=True)
     model = models.CharField(max_length=200)
     brand = models.ForeignKey(Brand, on_delete=models.PROTECT, related_name='car_brand')
@@ -21,8 +26,11 @@ class Car(models.Model):
     bio = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.model
-    
+        return f"{self.brand} {self.model}"
+
+    def save(self, *args, **kwargs):
+        super().save()
+
 class CarInventory(models.Model):
     cars_count = models.IntegerField()
     cars_value = models.FloatField()

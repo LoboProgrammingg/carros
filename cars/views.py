@@ -1,16 +1,17 @@
 from cars.models import Car
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CarReviewForm, FinanceCalculatorForm
+from .forms import CarReviewForm
 from .models import Car, CarReview
 from django.http import HttpResponseRedirect
 from cars.forms import CarModelForm
+import logging
 from django.urls import reverse
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView, View
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -22,13 +23,29 @@ class CarsListView(ListView):
     model = Car
     template_name = 'cars.html'
     context_object_name = 'cars'
+    paginate_by = 9
 
     def get_queryset(self):
-        cars = super().get_queryset().order_by('model')
-        search = self.request.GET.get('search')
-        if search:
-            cars = cars.filter(model__icontains=search)
-        return cars
+        queryset = super().get_queryset().order_by('model')
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(model__icontains=search_query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search', '')
+
+        # Paginação
+        queryset = self.get_queryset()
+        page_size = self.get_paginate_by(queryset)
+        paginator, page, queryset, is_paginated = self.paginate_queryset(queryset, page_size)
+
+        context['paginator'] = paginator
+        context['page_obj'] = page
+        context['is_paginated'] = is_paginated
+
+        return context
 
 
 class CarDetailView(DetailView):
@@ -97,11 +114,22 @@ class NewCarCreateView(CreateView):
     template_name = 'new_car.html'
     success_url = '/cars/'
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user  # Atribuindo o usuário
+        return super().form_valid(form)
+
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CarUpdateView(UpdateView):
     model = Car
     form_class = CarModelForm
     template_name = 'car_update.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user != request.user:
+            messages.error(request, "Você não tem permissão para editar este carro.")
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
@@ -110,7 +138,12 @@ class CarUpdateView(UpdateView):
 class CarDeleteView(DeleteView):
     model = Car
     template_name = 'car_delete.html'
-    success_url = '/cars/'
+    success_url = reverse_lazy('cars_list')  # Redireciona para a lista de carros
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.get_object()  # Passa o objeto para o template
+        return context
 
 class CarReviewCreateView(LoginRequiredMixin, CreateView):
     model = CarReview
@@ -125,3 +158,37 @@ class CarReviewCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('car_detail', kwargs={'pk': self.kwargs['car_id']})
+
+logger = logging.getLogger(__name__)
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class MyCarListView(ListView):
+    model = Car
+    template_name = 'user_cars.html'
+    context_object_name = 'user_cars'
+    paginate_by = 9
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user).order_by('model')
+        search_query = self.request.GET.get('search')
+
+        if search_query:
+            queryset = queryset.filter(model__icontains=search_query)
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search', '')
+
+        # Paginação
+        queryset = self.get_queryset()
+        page_size = self.get_paginate_by(queryset)
+        paginator, page, queryset, is_paginated = self.paginate_queryset(queryset, page_size)
+
+        context['paginator'] = paginator
+        context['page_obj'] = page
+        context['is_paginated'] = is_paginated
+
+        return context

@@ -4,36 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock %}</title>
+  {% load static %}
+  <link rel="icon" href="{% static 'images/car.png' %}" type="image/x-icon">
   <style>
-    body {
-        font-family: 'Open Sans', sans-serif;
-        background-color: #f7f7f7;
-        color: #333;
+    /* Reset básico para garantir que o estilo seja consistente */
+    * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #f4f7fa; /* Cor de fundo mais clara */
+        color: #2c3e50; /* Texto escuro */
+        line-height: 1.6;
+        overflow-x: auto; /* Permite rolagem horizontal se necessário */
     }
 
     header {
-        background-color: rgba(0,0,0,0.2);
+        background-color: #143d59;
         color: #fff;
-        text-align: center;
-        padding: 10px;
+        padding: 10px 20px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        position: relative;
     }
 
     footer {
-        background-color: #ccc;
-        color: #333;
-        padding: 20px;
+        background-color: #2c3e50; /* Azul escuro para o rodapé */
+        color: #f4b41a;
+        padding: 25px;
         text-align: center;
     }
 
     nav {
-        background-color: rgba(0,0,0,0.6);
-        color: #fff;
-        height: 50px;
+        color: #f4b41a;
+        height: auto; /* Ajuste a altura para que o conteúdo se ajuste */
         display: flex;
-        justify-content: center; /* Centering the nav bar items */
+        flex-wrap: wrap; /* Permite que os itens da navegação se movam para a linha seguinte */
+        justify-content: center;
         align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     nav ul {
@@ -41,442 +52,353 @@
         margin: 0;
         padding: 0;
         display: flex;
-        justify-content: center; /* Centering the list items */
+        flex-wrap: wrap; /* Permite que os itens se ajustem em dispositivos menores */
+        justify-content: center;
     }
 
     nav ul li {
-        margin: 0 10px;
+        margin: 0 10px; /* Margem reduzida para dispositivos menores */
     }
 
     nav ul li a {
         color: #fff;
         text-decoration: none;
-        font-size: 16px;
-        padding: 15px;
-        transition: all 0.3s ease;
+        font-size: 14px; /* Font-size reduzido para telas menores */
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        display: block;
     }
 
     nav ul li a:hover {
-        background-color: #32bbe8;
+        background-color: #e5a50d; /* Dourado mais suave */
+        transform: translateY(-2px);
     }
 
     nav ul li.active a {
-        background-color: #666;
+        background-color: #d99c0c; /* Dourado para link ativo */
     }
 
-    nav ul li.active a:hover {
-        background-color: #999;
-    }
     .container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-  }
-
-  .car-card {
-    background-color: #f8f9fa;
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    margin-bottom: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-
-  .car-card:hover {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
-  }
-
-  .car-card img {
-    width: 100%;
-    height: auto;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-bottom: 20px;
-  }
-
-  .car-card-content {
-    padding: 20px;
-    width: 100%;
-  }
-
-  .car-card h2 {
-    font-size: 2.5rem;
-    margin: 10px 0;
-    color: #0096c7;
-  }
-
-  .car-card p {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: #666;
-    line-height: 1.6;
-  }
-
-  .car-card p strong {
-    color: #333;
-  }
-
-  .price {
-    font-size: 1.8rem;
-    color: #1acc44;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-
-  .buttons-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-
-  .btn {
-    display: inline-block;
-    background-color: #0096c7;
-    color: #fff;
-    border: none;
-    padding: 15px 40px;
-    font-size: 16px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease;
-    margin: 0 10px;
-    text-decoration: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .btn:hover {
-    background-color: #007bb5;
-    transform: scale(1.05);
-  }
-
-  .btn-danger {
-    background-color: #d9534f;
-  }
-
-  .btn-danger:hover {
-    background-color: #d2221c;
-  }
-
-  .no-photo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 350px;
-    width: 100%;
-    background-color: #e0e0e0;
-    color: #888;
-    font-size: 1.2rem;
-    border-radius: 15px;
-    margin-bottom: 20px;
-  }
-
-  .car-details {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .car-details div {
-    flex: 1 1 48%;
-    margin-bottom: 15px;
-  }
-
-  .car-details div p {
-    font-size: 1.2rem;
-  }
-
-  .rating {
-    margin: 20px auto;
-    text-align: center;
-  }
-
-  .rating h3 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    color: #0096c7;
-  }
-
-  .rating form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-
-  .rating label {
-    font-size: 1.2rem;
-    margin-right: 10px;
-    color: #333;
-  }
-
-  .rating input[type="radio"] {
-    display: none;
-  }
-
-  .rating label span {
-    font-size: 2rem;
-    color: #ffc107;
-    cursor: pointer;
-  }
-
-  .rating label span:hover,
-  .rating label span:hover ~ span {
-    color: #f8d150;
-  }
-
-  .comments {
-    margin: 20px auto;
-    text-align: center;
-  }
-
-  .comments h3 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    color: #0096c7;
-  }
-
-  .comments ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  .comments li {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-  }
-
-  .comments li:last-child {
-    border-bottom: none;
-  }
-
-  .comments li strong {
-    font-weight: bold;
-  }
-
-  .comments p {
-    font-size: 1.2rem;
-    color: #666;
-  }
-
-  .comment-form {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .comment-form label {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .comment-form textarea {
-    width: calc(100% - 20px);
-    padding: 10px;
-    font-size: 1.1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: vertical;
-    margin-bottom: 10px;
-  }
-
-  .comment-form button {
-    background-color: #0096c7;
-    color: #fff;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease;
-  }
-
-  .comment-form button:hover {
-    background-color: #007bb5;
-    transform: scale(1.05);
-  }
-
-  .finance-form {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .finance-form h3 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    color: #0096c7;
-    text-align: center;
-  }
-
-  .finance-form form {
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .finance-form .form-group {
-    margin-bottom: 20px;
-  }
-
-  .finance-form label {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .finance-form input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    font-size: 1.1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: vertical;
-    margin-bottom: 10px;
-  }
-
-  .finance-form button {
-    display: block;
-    width: 100%;
-    background-color: #0096c7;
-    color: #fff;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease;
-    text-align: center;
-  }
-
-  .finance-form button:hover {
-    background-color: #007bb5;
-    transform: scale(1.05);
-  }
-
-  @media (max-width: 768px) {
-    .car-details div {
-      flex: 1 1 100%;
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border-radius: 15px;
+        overflow-x: auto; /* Permite rolagem horizontal se necessário */
     }
 
-    .btn {
-      padding: 10px 30px;
-      font-size: 1.2rem;
+    .car-card {
+        background-color: #ffffff; /* Branco puro */
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .car-card:hover {
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .car-card img {
+        width: 100%;
+        height: auto;
+        max-height: 300px; /* Ajuste a altura da imagem */
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
+
+    .car-card-content {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .car-card h2 {
+        font-size: 2rem; /* Font-size reduzido para telas menores */
+        margin: 10px 0;
+        color: #143d59; /* Azul-escuro para títulos */
+    }
+
+    .car-card p {
+        font-size: 1rem; /* Font-size reduzido para telas menores */
+        margin-bottom: 15px;
+        color: #7f8c8d; /* Cinza médio */
+        line-height: 1.5;
+    }
+
+    .car-card p strong {
+        color: #2c3e50; /* Cinza escuro */
     }
 
     .price {
-      font-size: 1.5rem;
+        font-size: 1.5rem; /* Font-size reduzido para telas menores */
+        color: #f4b41a; /* Dourado para preços */
+        font-weight: bold;
+        margin-top: 5px;
     }
 
-    .rating > label {
-      font-size: 1.2rem;
+    .buttons-container {
+        display: flex;
+        flex-direction: column; /* Alinha os botões verticalmente em telas menores */
+        justify-content: center;
+        margin: 15px 0;
     }
 
-    .comments li {
-      font-size: 1rem;
+    .btn {
+        display: block; /* Torna os botões de bloco para telas menores */
+        background-color: #f4b41a; /* Dourado para botões */
+        color: #fff;
+        border: none;
+        padding: 10px 25px; /* Ajusta o padding para telas menores */
+        font-size: 14px; /* Font-size reduzido para telas menores */
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin: 10px auto;
+        text-decoration: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
-     .messages {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    width: 100%;
-    max-width: 600px;
-  }
 
-  .alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-  }
-  .finance-result .alert-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  animation: fadeIn 1s ease-in-out;
-  } 
+    .btn:hover {
+        background-color: #e5a50d; /* Dourado mais escuro ao passar o mouse */
+        transform: translateY(-2px);
+    }
 
-  /* Animação para a mensagem */
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+    .btn-danger {
+        background-color: #e74c3c; /* Vermelho para perigo */
+    }
 
-  .alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-  }
+    .btn-danger:hover {
+        background-color: #c0392b; /* Vermelho mais escuro ao passar o mouse */
+    }
 
-  .alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-  }
+    .no-photo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px; /* Altura ajustada para telas menores */
+        width: 100%;
+        background-color: #d3d3d3; /* Cinza claro para sem foto */
+        color: #888;
+        font-size: 1.2rem; /* Font-size ajustado para telas menores */
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
 
-  .alert-info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border: 1px solid #bee5eb;
-  }
+    .car-details {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
 
-  .alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-  }
-  footer div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px; /* Espaçamento entre os itens */
-}
-}
+    .car-details div {
+        flex: 1 1 100%; /* Ajusta para uma coluna em telas menores */
+        margin-bottom: 20px;
+    }
+
+    .car-details div p {
+        font-size: 1rem; /* Font-size ajustado para telas menores */
+    }
+
+    .rating {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .rating h3 {
+        font-size: 1.5rem; /* Font-size ajustado para telas menores */
+        margin-bottom: 10px;
+        color: #f4b41a; /* Dourado para avaliações */
+    }
+
+    .rating form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .rating label {
+        font-size: 1rem; /* Font-size ajustado para telas menores */
+        margin-right: 10px;
+        color: #2c3e50; /* Cinza escuro */
+    }
+
+    .rating input[type="radio"] {
+        display: none;
+    }
+
+    .rating label span {
+        font-size: 1.5rem; /* Font-size ajustado para telas menores */
+        color: #f39c12; /* Amarelo para estrelas */
+        cursor: pointer;
+    }
+
+    .rating label span:hover,
+    .rating label span:hover ~ span {
+        color: #f1c40f; /* Amarelo mais claro ao passar o mouse */
+    }
+
+    .comments {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .comments h3 {
+        font-size: 1.5rem; /* Font-size ajustado para telas menores */
+        margin-bottom: 10px;
+        color: #f4b41a; /* Dourado para comentários */
+    }
+
+    .comments ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .comments ul li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .comments ul li p {
+        font-size: 1rem; /* Font-size ajustado para telas menores */
+        color: #7f8c8d; /* Cinza médio */
+    }
+
+    .comments ul li p strong {
+        color: #2c3e50; /* Cinza escuro */
+    }
+
+    .comment-form {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        resize: vertical;
+        font-size: 1rem; /* Font-size ajustado para telas menores */
+    }
+
+    .comment-form button {
+        background-color: #f4b41a; /* Dourado para o botão */
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 14px; /* Font-size ajustado para telas menores */
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin: 10px auto;
+        display: block;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-form button:hover {
+        background-color: #e5a50d; /* Dourado mais escuro ao passar o mouse */
+        transform: translateY(-2px);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .car-card {
+            padding: 10px;
+        }
+
+        .car-card h2 {
+            font-size: 1.5rem; /* Font-size ajustado para telas menores */
+        }
+
+        .car-card p {
+            font-size: 0.9rem; /* Font-size ajustado para telas menores */
+        }
+
+        .btn {
+            padding: 8px 20px; /* Ajuste o padding para telas menores */
+            font-size: 12px; /* Font-size ajustado para telas menores */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .car-card {
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        .car-card h2 {
+            font-size: 1.2rem; /* Font-size ajustado para telas menores */
+        }
+
+        .car-card p {
+            font-size: 0.8rem; /* Font-size ajustado para telas menores */
+        }
+
+        .rating h3 {
+            font-size: 1.2rem; /* Font-size ajustado para telas menores */
+        }
+
+        .comment-form textarea {
+            font-size: 0.9rem; /* Font-size ajustado para telas menores */
+        }
+
+        .comment-form button {
+            font-size: 12px; /* Font-size ajustado para telas menores */
+        }
+        
+    }
   </style>
-
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{};
     Tawk_API.visitor = {
-      name  : 'user.username',
+      name: 'user.username',
       // Outras informações que deseja passar
-      // Incluindo um identificador único para o usuário
     };
-    </script>
-<script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/668ee6357a36f5aaec96e29a/1i2f36gq6';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s1.setAttribute('data-tawk-visitor', '{{ user.username }}'); // Usando o username como identificador único
-  s0.parentNode.insertBefore(s1,s0);
-  })();
+  </script>
+  <script type="text/javascript">
+    // Inicializar Tawk_API e definir as configurações do visitante
+    var Tawk_API = Tawk_API || {};
+    var Tawk_LoadStart = new Date();
+  
+    // Função para configurar o visitante e carregar o script
+    function loadTawkScript() {
+      var s1 = document.createElement("script");
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6698304f32dca6db2cb16668/1i317pe11'; // Substitua com o seu ID do Tawk.to
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      
+      // Adicionar o script ao DOM
+      var s0 = document.getElementsByTagName("script")[0];
+      s0.parentNode.insertBefore(s1, s0);
+      
+      // Configurar o visitante após o carregamento do script
+      s1.onload = function() {
+        Tawk_API.visitor = {
+          name: '{{ user.username }}', // Nome do usuário autenticado
+          // Outras informações do visitante, se necessário
+        };
+      };
+    }
+  
+    // Carregar o script do Tawk.to
+    loadTawkScript();
   </script>
 </head>
 <body>
@@ -484,36 +406,38 @@
     <nav>
       <ul>
         {% if user.is_authenticated %}
-          <li>Ola, {{ user.username }}</li>
+          <li>Olá, {{ user.username }}</li>
+          <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
         {% endif %}
-
         {% if not user.is_authenticated %}
-          <li><a href="{% url 'register' %}">Cadastre-se</a></li>
-          <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Cadastre-se</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
         {% endif %}
-
-        <li><a href="{% url 'home' %}">Home</a></li>
         <li><a href="{% url 'cars_list' %}">Carros</a></li>
         <li><a href="{% url 'sobre' %}">Sobre mim</a></li>
-
         {% if user.is_authenticated %}
           <li><a href="{% url 'update_profile' %}">Atualizar Dados</a></li>
+          <li><a href="{% url 'my_cars' %}">Meus Carros</a></li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
         {% endif %}
+      </div>
       </ul>
     </nav>
   </header>
 
   <main>
-    {% block content %}
-    {% endblock %}
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
   </main>
 
   <footer>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 30px;">
-      <p>E-mail: <a href="mailto:matheusloboo2001@gmail.com">matheusloboo2001@gmail.com</a></p>
-      <p>&copy; 2024 Matheus Lobo Camara. Todos os direitos reservados.</p>
+    <div>
+      <p>E-mail: matheusloboo2001@gmail.com</p>
+      <p>&copy; 2024 Lobo Multimarcas S.A. Todos os direitos reservados</p>
       <p>Telefone: (65) 99254-0370</p>
     </div>
   </footer>

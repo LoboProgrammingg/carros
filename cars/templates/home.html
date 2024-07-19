@@ -1,25 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Home - Lobo Multimarcas
+{% endblock %}
 
 {% block content %}
-<div class="hero-section text-center py-2 mb-1">
-    <div class="container">
-        <h1 class="display-4 text-white">Bem-vindo à Lobo Multimarcas</h1>
-        <p class="lead text-white">A sua melhor opção para comprar e vender carros de qualidade, com confiança e atendimento excepcional a cada passo.</p>
+<div class="hero-section">
+    <div class="container text-center py-5 hero-text"> <!-- Adicionada a classe hero-text -->
+        <h1 class="display-4"></h1>
     </div>
 </div>
 
 <div class="container my-2">
     <div class="row">
-        <div class="row text-center mb-2">
-            <div class="col-md-12">
-                <div class="service-card p-2">
-                    <h2 class="mb-2">Ainda Não Tem Registro?</h2>
-                    <p>Crie sua conta hoje mesmo e aproveite todas as vantagens de ser um cliente da Lobo Multimarcas!</p>
-                    <a href="{% url 'register' %}" class="btn btn-primary btn-lg mt-1 shadow">Registrar-se</a>
-                </div>
-            </div>
-        </div>
-
         <div class="col-md-6 text-center mb-2">
             <div class="service-card p-2">
                 <h2 class="mb-2">LISTA DE CARROS</h2>
@@ -67,40 +61,39 @@
         font-family: 'Arial', sans-serif;
         background-color: #f0f4f8;
         line-height: 1.6;
+        margin: 0;
+        padding: 0;
     }
-
     .hero-section {
-        background-image: url('path/to/your/image.jpg');
+        background-image: url('{% static "images/LOBO.png" %}');
         background-size: cover;
-        background-position: center;
+        background-position: bottom;
+        background-color: rgba(0, 0, 0, 0.1);
+        height: 75vh;
         color: #ffffff;
-        border-radius: 0 0 20px 20px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        position: relative;
-        padding: 30px 15px; 
-        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 30px;
     }
 
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 0 0 20px 20px;
-        z-index: 1;
+    .hero-text {
+        background-color: rgba(0.8, 0.4, 0, 0.1); /* Cor com transparência */
+        color: #c29734;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: OCR A Std, monospace;
     }
 
     .service-card {
-        background-color: #ffffff;
+        background-color: rgba(0, 0, 0, 0.1); /* Fundo com transparência */
         border-radius: 15px;
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s, box-shadow 0.3s;
         position: relative;
         z-index: 2;
         padding: 15px;
-        border: 1px solid #e6e6e6;
+        border: 1px solid rgba(230, 230, 230, 0.5); /* Bordas mais sutis */
         text-align: center;
     }
 
@@ -111,7 +104,7 @@
 
     h1, h2 {
         text-align: center;
-        color: black;
+        color: #143d59;
         text-transform: uppercase;
         font-weight: bold;
         letter-spacing: 1px;
@@ -119,25 +112,25 @@
 
     p {
         text-align: center;
-        color: grey;
+        color: #c29734;
         line-height: 1.7;
-        font-size: 1.1rem; /* Aumenta o tamanho da fonte */
-        padding: 10px; /* Adiciona um pouco de padding */
-        border-radius: 8px; /* Arredondar os cantos */
-        margin: 10px 0; /* Margem para espaçamento */
+        font-size: 1.1rem;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 10px 0;
     }
 
     .btn-primary {
-        background-color: #007bff;
+        background-color: #f4b41a;
         border: none;
-        padding: 15px 30px;
+        padding: 30px;
         border-radius: 8px;
         transition: background-color 0.3s ease, transform 0.2s ease;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: #143d59;
         transform: scale(1.05);
     }
 
@@ -151,15 +144,20 @@
         max-width: 800px;
         margin: 0 auto;
         padding: 10px;
+        background-image: url('{% static "images/fundo_secoes.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 10px;
     }
 
     blockquote {
-        border-left: 5px solid #007bff;
+        border-left: 5px solid #f4b41a;
         padding-left: 20px;
         margin: 5px auto;
         font-style: italic;
         color: #333;
-        background: #f8f9fa;
+        background: rgba(248, 249, 250, 0.8); /* Fundo com transparência */
         border-radius: 10px;
         padding: 10px;
         position: relative;
@@ -173,7 +171,7 @@
         left: -10px;
         width: 20px;
         height: 20px;
-        background: #007bff;
+        background: #f4b41a;
         border-radius: 50%;
         z-index: -1;
     }
@@ -184,12 +182,12 @@
             margin-top: 10px;
         }
 
-        .hero-section {
-            padding: 80px 15px;
-        }
-
         h1 {
             font-size: 2.5rem;
+        }
+
+        .hero-section {
+            padding: 80px 15px;
         }
     }
 </style>

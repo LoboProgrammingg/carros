@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% load static %}
+
+{% block title %}
+  Seus Carros - Lobo Multimarcas
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        color: #143d59;
+        text-align: center;
+        margin-top: 40px;
+        font-size: 2.5rem;
+    }
+
+    .search-form {
+        display: flex;
+        justify-content: center;
+        margin: 20px auto;
+        max-width: 600px;
+    }
+
+    .search-form input[type="text"] {
+        padding: 14px 20px;
+        font-size: 18px;
+        border: 2px solid #ddd;
+        border-radius: 50px 0 0 50px;
+        outline: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease;
+    }
+
+    .search-form input[type="text"]:focus {
+        border-color: #143d59;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-form button[type="submit"] {
+        background-color: #143d59;
+        color: #fff;
+        border: none;
+        padding: 14px 30px;
+        font-size: 18px;
+        border-radius: 0 50px 50px 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .search-form button[type="submit"]:hover {
+        background-color: #f4b41a;
+    }
+
+    .car-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1200px;
+    }
+
+    .car-item {
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 300px;
+        text-align: center;
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .car-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .car-photo {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .car-model {
+        font-size: 1.75rem;
+        color: #143d59;
+        margin: 15px 0;
+    }
+
+    .car-brand, .car-factory-year {
+        font-size: 1.1rem;
+        color: #666;
+        margin: 5px 0;
+    }
+
+    .car-value {
+        font-size: 1.3rem;
+        color: #27ae60; /* Cor verde para o valor do carro */
+        font-weight: bold;
+        margin: 5px 0;
+    }
+
+    .car-actions {
+        margin-top: 15px;
+    }
+
+    .car-actions a {
+        display: inline-block;
+        background-color: #143d59;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        font-size: 15px;
+        border-radius: 5px;
+        margin: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .car-actions a:hover {
+        background-color: #f4b41a;
+    }
+
+    .car-actions .delete {
+        background-color: #e74c3c;
+    }
+
+    .car-actions .delete:hover {
+        background-color: #c0392b;
+    }
+
+    .pagination {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .pagination .step-links a {
+        background-color: #143d59;
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+    }
+
+    .pagination .step-links a:hover {
+        background-color: #f4b41a;
+    }
+
+    .pagination .current {
+        margin: 0 15px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    /* Novo estilo para o botão de adicionar carro */
+    .add-car-button {
+        display: block;
+        background: linear-gradient(135deg, #143d59, #1e2a3e);
+        color: white;
+        text-align: center;
+        padding: 14px 30px;
+        font-size: 18px;
+        border-radius: 5px;
+        margin: 20px auto;
+        max-width: 300px;
+        text-decoration: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .add-car-button:hover {
+        background: #f4b41a;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+    }
+</style>
+
+<h1>Meus Anúncios</h1>
+
+<form method="get" class="search-form">
+    <input type="text" name="search" placeholder="Buscar carro..." value="{{ search }}">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if user_cars %}
+    <ul class="car-list">
+        {% for car in user_cars %}
+            <li class="car-item">
+                {% if car.photo %}
+                    <img src="{{ car.photo.url }}" alt="{{ car.model }}" class="car-photo">
+                {% else %}
+                    <img src="{% static 'images/default_car_image.png' %}" alt="Imagem padrão" class="car-photo">
+                {% endif %}
+                <h2 class="car-model">{{ car.model }}</h2>
+                <p class="car-brand">Marca: {{ car.brand }}</p>
+                <p class="car-factory-year">Ano de Fabricação: {{ car.factory_year }}</p>
+                <p class="car-value">Valor: R$ {{ car.value|floatformat:"0g" }}</p>
+                <div class="car-actions">
+                    <a href="{% url 'car_detail' car.id %}">Detalhes</a>
+                    <a href="{% url 'car_update' car.id %}">Editar</a>
+                    <a href="{% url 'car_delete' car.id %}" class="delete">Deletar</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?{% if search %}search={{ search }}&{% endif %}page=1">&laquo; primeira</a>
+                <a href="?{% if search %}search={{ search }}&{% endif %}page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?{% if search %}search={{ search }}&{% endif %}page={{ page_obj.next_page_number }}">próxima</a>
+                <a href="?{% if search %}search={{ search }}&{% endif %}page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% else %}
+    <p style="text-align: center; color: #143d59;">Você ainda não anunciou nenhum carro.</p>
+    <a href="{% url 'new_car' %}" class="add-car-button">Adicionar Novo Carro</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+<style>
+    /* CSS para estrelas de avaliação */
+.star-rating {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .star-rating input[type="radio"] {
+    display: none;
+  }
+  
+  .star-rating .star {
+    display: inline-block;
+    font-size: 24px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .star-rating .star:before {
+    content: '\2605'; /* Símbolo da estrela */
+  }
+  
+  .star-rating input[type="radio"]:checked ~ .star {
+    color: #f7d85c; /* Cor das estrelas preenchidas */
+  }
+  
+  .star-rating input[type="radio"]:checked ~ .star ~ .star {
+    color: #ddd; /* Cor das estrelas não preenchidas */
+  }
+</style>
+{% for radio in widget %}
+  <label class="star-rating">
+    <input type="radio" name="{{ widget.name }}" value="{{ radio.value }}" id="{{ radio.id_for_label }}" {{ radio.attrs|flatatt }}>
+    <span class="star" data-value="{{ radio.value }}" title="{{ radio.choice_label }}"></span>
+  </label>
+{% endfor %}

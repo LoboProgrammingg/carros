@@ -1,139 +1,184 @@
 {% extends "base.html" %}
 
+{% block title %}
+  Criar Carro - Lobo Multimarcas
+{% endblock %}
+
 {% block content %}
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8f9fa;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f2f4f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
 
+  .container {
+    max-width: 960px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e1e4e8;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    color: #143d59;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+  }
+
+  h1::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #f4b41a;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+
+  form {
+    margin: 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+  }
+
+  th, td {
+    padding: 18px;
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 8px;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    color: #143d59;
+    font-weight: 500;
+    border-bottom: 2px solid #e1e4e8;
+  }
+
+  td {
+    background-color: #ffffff;
+    border: 1px solid #e1e4e8;
+  }
+
+  input[type="text"], input[type="number"], select, textarea {
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #143d59;
+    box-shadow: 0 0 8px rgba(20, 61, 89, 0.3);
+  }
+
+  .btn-container {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .btn {
+    background-color: #143d59;
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    margin: 0 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background-color: #f4b41a;
+    color: #143d59;
+  }
+
+  .btn-primary:hover {
+    background-color: #e59e00;
+    color: #ffffff;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  .btn-danger {
+    background-color: #d9534f;
+    color: #ffffff;
+  }
+
+  .btn-danger:hover {
+    background-color: #c9302c;
+  }
+
+  .error-message {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+
+  @media (max-width: 768px) {
     .container {
-      max-width: 800px;
-      margin: 40px auto;
       padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    form {
-      margin-bottom: 20px;
-    }
-
-    form h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #0096c7;
-    }
-
-    table {
-      margin: 0 auto;
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    th, td {
-      padding: 16px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      color: #333;
-      font-weight: bold;
     }
 
     input[type="text"], input[type="number"], select, textarea {
       padding: 12px;
-      font-size: 16px;
-      border: 2px solid #ddd;
-      border-radius: 4px;
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 12px;
-      transition: border-color 0.3s ease-in-out;
-    }
-
-    input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #0096c7;
-    }
-
-    .btn-container {
-      text-align: center;
-      margin-top: 30px;
+      font-size: 14px;
     }
 
     .btn {
-      background-color: #0096c7;
-      color: #fff;
-      border: none;
-      padding: 14px 28px;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    .btn:hover {
-      background-color: #108eb8;
-    }
-
-    .btn-danger {
-      background-color: #d9534f;
-    }
-
-    .btn-danger:hover {
-      background-color: #d2221c;
-    }
-
-    .error-message {
-      color: #d9534f;
+      padding: 12px 24px;
       font-size: 14px;
-      margin-top: 5px;
     }
+  }
+</style>
 
-    a {
-      text-decoration: none !important;
-    }
-
-    @media (max-width: 768px) {
-      form {
-        padding: 10px;
-      }
-
-      input[type="text"], input[type="number"], select, textarea {
-        padding: 10px;
-        font-size: 14px;
-        max-width: 100%;
-      }
-
-      .btn {
-        padding: 12px 24px;
-        font-size: 14px;
-      }
-    }
-
-  </style>
-
-  <div class="container">
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <h1>Cadastrar Novo Carro</h1>
-      <table>
-        {{ form.as_table }}
-      </table>
-      <div class="btn-container">
-        <input type="submit" value="Cadastrar" class="btn btn-primary">
-        <a href="{% url 'cars_list' %}" class="btn btn-secondary">Cancelar</a>
-      </div>
-    </form>
-  </div>
+<div class="container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1>Cadastrar Novo Carro</h1>
+    <table>
+      {{ form.as_table }}
+    </table>
+    <div class="btn-container">
+      <input type="submit" value="Cadastrar" class="btn btn-primary">
+      <a href="{% url 'cars_list' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

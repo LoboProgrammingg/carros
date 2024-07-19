@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %}
+  Login - Lobo Multimarcas
+{% endblock %}
+
 {% block content %}
 <style>
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f8f9fa;
+        background-color: rgba(0, 0, 0, 0.3);
     }
 
     .login-container {
@@ -19,7 +23,7 @@
     .login-container h2 {
         margin-bottom: 20px;
         text-align: center;
-        color: #007bff;
+        color: #143d59;
     }
 
     .login-form {
@@ -58,7 +62,7 @@
 
     .login-form input[type="submit"] {
         width: 100%;
-        background-color: #007bff;
+        background-color: #143d59;
         color: #fff;
         border: none;
         padding: 12px;
@@ -73,29 +77,56 @@
     }
 
     .login-form p {
-        color: #6c757d;
+        color: #143d59;
         margin-bottom: 10px;
     }
 
     .login-footer {
         margin-top: 20px;
         text-align: center;
-        color: #6c757d;
+        color: #143d59;
     }
 
     .login-footer a {
-        color: #007bff;
+        color: #143d59;
         text-decoration: none;
         transition: color 0.3s ease;
     }
 
     .login-footer a:hover {
-        color: #0056b3;
+        color: #143d59;
+    }
+
+    /* Estilo para mensagens */
+    .messages {
+        background-color: #eafaf1;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        list-style-type: none;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .messages li {
+        margin: 0;
+        padding: 5px 0;
     }
 </style>
 
 <div class="login-container">
     <h2>Bem-vindo ao Sistema</h2>
+    
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
     <form method="post" class="login-form">
         {% csrf_token %}
         <table>
@@ -103,8 +134,13 @@
         </table>
         <input type="submit" value="Entrar">
     </form>
+    
+    <p style="text-align: center; margin-top: 15px;">
+        <a href="{% url 'password_reset' %}" style="color: #143d59; text-decoration: underline;">Esqueceu a senha?</a>
+    </p>
+    
     <div class="login-footer">
-        <p>Não tem uma conta? <a href="register" style="font-weight: bold;">Crie uma agora</a></p>
+        <p>Não tem uma conta? <a href="{% url 'register' %}" style="font-weight: bold;">Crie uma agora</a></p>
     </div>
 </div>
 

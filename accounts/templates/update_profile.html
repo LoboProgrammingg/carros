@@ -1,68 +1,171 @@
 {% extends 'base.html' %}
+{% load filters %}
+
+{% block title %}
+  Atualizar Perfil - Lobo Multimarcas
+{% endblock %}
 
 {% block content %}
+<style>
+    /* Styles for the profile update page */
+    body {
+        background-color: #f4f4f4;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 30px auto;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+        color: #143d59;
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #f4b41a;
+        padding-bottom: 10px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #333;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #f4b41a;
+        outline: none;
+        box-shadow: 0 0 8px rgba(244, 180, 26, 0.3);
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: #fff;
+    }
+
+    .btn-success:hover {
+        background-color: #219150;
+        transform: translateY(-2px);
+    }
+
+    .alert {
+        margin: 20px 0;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #e7f3fe;
+        border: 1px solid #d1e7fd;
+        color: #0c5460;
+    }
+
+    .messages {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .messages li {
+        margin: 10px 0;
+        padding: 12px;
+        border-radius: 8px;
+        background-color: #e7f3fe;
+        border-left: 5px solid #0d6efd;
+    }
+</style>
+
 <div class="container">
-    <h2>Atualizar Perfil</h2>
-    <p>Olá, <strong>{{ request.user.username }}</strong>! Use o formulário abaixo para atualizar seu perfil.</p>
+    <h2 class="text-center">Atualizar Perfil</h2>
+    <p class="text-center">Olá, <strong>{{ request.user.username }}</strong>! Use o formulário abaixo para atualizar seu perfil.</p>
+
+    {% if messages %}
+        <div class="alert" role="alert">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
     <form method="post" class="profile-update-form">
         {% csrf_token %}
-        {{ user_form.as_p }}
-        <button type="submit" name="user_form_submit" class="btn btn-primary">Salvar Alterações</button>
+        <div class="form-group">
+            <label for="username">{{ user_form.username.label }}</label>
+            {{ user_form.username|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            <label for="email">{{ user_form.email.label }}</label>
+            {{ user_form.email|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            <label for="first_name">{{ user_form.first_name.label }}</label>
+            {{ user_form.first_name|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            <label for="last_name">{{ user_form.last_name.label }}</label>
+            {{ user_form.last_name|add_class:"form-control" }}
+        </div>
+        <div class="text-center">
+            <button type="submit" name="user_form_submit" class="btn btn-success">Salvar Alterações</button>
+        </div>
     </form>
 
-    <h2>Alterar Senha</h2>
+    <h2 class="text-center mt-4">Alterar Senha</h2>
     <form method="post" action="{% url 'update_profile' %}" class="password-change-form">
         {% csrf_token %}
-        {{ password_form.as_p }}
-        <button type="submit" name="password_form_submit" class="btn btn-primary">Alterar Senha</button>
+        <div class="form-group">
+            <label for="old_password">{{ password_form.old_password.label }}</label>
+            {{ password_form.old_password|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            <label for="new_password1">{{ password_form.new_password1.label }}</label>
+            {{ password_form.new_password1|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+            <label for="new_password2">{{ password_form.new_password2.label }}</label>
+            {{ password_form.new_password2|add_class:"form-control" }}
+        </div>
+        <div class="text-center">
+            <button type="submit" name="password_form_submit" class="btn btn-success">Alterar Senha</button>
+        </div>
     </form>
 </div>
-
-<style>
-    /* Estilos específicos para o formulário de atualização de perfil */
-    .container {
-        max-width: 500px;
-        margin: 20px auto;
-        background-color: #f9f9f9;
-        padding: 30px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h2, legend {
-        text-align: center;
-        color: #333;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: #666;
-    }
-    input[type="text"], input[type="email"], input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 4px;
-        margin-right: 10px;
-    }
-    .btn:hover {
-        background-color: #0056b3;
-    }
-    .invalid-feedback {
-        color: red;
-        font-size: 14px;
-    }
-</style>
 {% endblock %}

@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 {% load custom_filters %}
 
+{% block title %}
+  Detalhes - Lobo Multimarcas
+{% endblock %}
+
 {% block content %}
 <style>
   /* Estilos para a lista de comentários */
   .comments {
     margin-top: 20px;
   }
-
+  
   .comments h3 {
     font-size: 24px;
     margin-bottom: 10px;
@@ -52,14 +56,60 @@
   }
 
   /* Estilos adicionais */
+  .finance-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+
+  .finance-form h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #143d59;
+  }
+
+  .finance-form .form-group {
+    margin-bottom: 15px;
+  }
+
+  .finance-form label {
+    font-size: 16px;
+    color: #333;
+  }
+
+  .finance-form input[type="number"],
+  .finance-form input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .finance-form button {
+    background-color: #143d59;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .finance-form button:hover {
+    background-color: #0d2b40;
+  }
+
   .finance-result {
     margin-top: 20px;
   }
 
   .finance-result .alert-success {
     padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
     border-radius: 4px;
     background-color: #dff0d8;
     border-color: #d6e9c6;
@@ -98,16 +148,27 @@
   .rating input:checked ~ label:before {
     color: #f7d85c; /* Cor das estrelas preenchidas */
   }
+
+  .creator-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
 </style>
+
 <div class="container">
+  <!-- Detalhes do carro -->
   <div class="car-card">
     {% if object.photo %}
-    <img src="{{ object.photo.url }}" alt="{{ object.model }} - {{ object.brand }}">
+      <img src="{{ object.photo.url }}" alt="{{ object.model }} - {{ object.brand }}">
     {% else %}
-    <div class="no-photo">Foto não disponível</div>
+      <div class="no-photo">Foto não disponível</div>
     {% endif %}
     <div class="car-card-content">
       <h2>{{ object.brand }} {{ object.model }}</h2>
+      <div class="creator-info">
+        <strong>Criado por:</strong> {{ object.user.username }}
+      </div>
       <div class="car-details">
         <div>
           <p><strong>Ano de fabricação:</strong> {{ object.factory_year }}</p>
@@ -123,16 +184,16 @@
         </div>
       </div>
       {% if object.bio %}
-      <p><strong>Descrição:</strong> {{ object.bio }}</p>
+        <p><strong>Descrição:</strong> {{ object.bio }}</p>
       {% endif %}
     </div>
   </div>
 
-  {% if user.is_authenticated %}
-  <div class="buttons-container">
-    <a href="{% url 'car_update' pk=object.pk %}" class="btn">Editar</a>
-    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
-  </div>
+  {% if user.is_authenticated and object.user == user %}
+    <div class="buttons-container">
+      <a href="{% url 'car_update' pk=object.pk %}" class="btn">Editar</a>
+      <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+    </div>
   {% endif %}
 
   <!-- Formulário para calcular financiamento -->
@@ -145,17 +206,17 @@
         <input type="text" id="id_price" name="price" class="form-control" value="{{ object.value }}" readonly required>
       </div>
       <div class="form-group">
-        <label for="id_interest_rate">Taxa de Juros Anual (%)</label>
+        <label for="id_interest_rate">Taxa de Juros(%)</label>
         <input type="number" id="id_interest_rate" name="interest_rate" class="form-control" step="0.01" value="10" readonly required>
       </div>
       <div class="form-group">
-        <label for="id_loan_term">Prazo do Financiamento (em anos)</label>
+        <label for="id_loan_term">Quantos Anos: </label>
         <input type="number" id="id_loan_term" name="loan_term" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary">Calcular Pagamento Mensal</button>
     </form>
     <div id="messages" class="messages"></div>
-    <div id="finance-result" class="finance-result"></div> <!-- Elemento para exibir resultado -->
+    <div id="finance-result" class="finance-result"></div>
   </div>
 
   <!-- Formulário para adicionar comentário -->
@@ -191,7 +252,9 @@
             <strong>{{ review.user.username }}</strong>
             <small>{{ review.created_at|date:"d/m/Y H:i" }}</small><br>
             <div class="stars">
-              
+              {% for star in "★★★★★" %}
+                <span class="{% if forloop.counter <= review.rating %}stars{% else %}no-stars{% endif %}">{{ star }}</span>
+              {% endfor %}
             </div>
             <p>{{ review.comment }}</p>
           </li>
@@ -217,10 +280,7 @@
       alertDiv.textContent = 'Calculando...';
 
       messagesDiv.appendChild(alertDiv);
-
-      // Simulação de cálculo por 2 segundos
-      setTimeout(function () {
-        alertDiv.style.display = 'none';
+      Confirmado;
 
         // Cálculo do resultado do financiamento
         const financeResultDiv = document.getElementById('finance-result');

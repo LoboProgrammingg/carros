@@ -1,6 +1,5 @@
-<!-- about_us.html -->
-
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
   Sobre Mim - Lobo Multimarcas
@@ -11,66 +10,108 @@
   /* Estilos específicos para a página Sobre Nós */
   .about-section {
     background-color: #f7f9fc;
-    padding: 50px 0;
+    padding: 40px 10px;
     text-align: center;
+    border-bottom: 5px solid #143d59;
   }
 
   .about-section h1 {
-    font-size: 2.5rem;
-    color: #0096c7;
+    font-size: 2rem;
+    color: #143d59;
     margin-bottom: 20px;
+    font-weight: bold;
   }
 
   .about-section h4 {
-    font-size: 1.2rem;
-    color: #333;
+    font-size: 1rem;
+    color: #555;
     line-height: 1.6;
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 10px;
+    text-align: justify;
+  }
+
+  .about-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 20px 0;
+    object-fit: cover;
+    border: 5px solid #f4b41a;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   }
 
   .team-section {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin-top: 30px;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }
 
   .team-member {
     text-align: center;
-    width: 250px;
-    padding: 20px;
-    background-color: #fff;
+    width: 100%;
+    max-width: 250px;
+    padding: 15px;
+    background-color: #f1f1f1;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+
+  .team-member:hover {
+    transform: translateY(-5px);
   }
 
   .team-member h3 {
-    font-size: 1.5rem;
-    color: #333;
+    font-size: 1.4rem;
+    color: #143d59;
     margin-bottom: 10px;
   }
 
   .team-member p {
-    font-size: 1rem;
-    color: #666;
+    font-size: 0.9rem;
+    color: #ac7d11;
+  }
+
+  @media (min-width: 768px) {
+    .about-section {
+      padding: 60px 20px;
+    }
+
+    .about-section h1 {
+      font-size: 2.8rem;
+    }
+
+    .about-section h4 {
+      font-size: 1.25rem;
+    }
+
+    .about-image {
+      width: 220px;
+      height: 220px;
+    }
+
+    .team-section {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
   }
 </style>
 
 <div class="about-section">
   <div class="container">
     <h1>Sobre Mim</h1>
+    <img src="{% static 'images/eu.jpg' %}" alt="Matheus Lobo Camara" class="about-image">
     <h4>
-      Olá! Sou Matheus Lobo Camara, um entusiasta da programação especializado em Python, com foco no poderoso framework Django. Minha paixão e expertise estão principalmente no desenvolvimento de soluções robustas no back-end, mas também tenho sólidos conhecimentos em front-end.
-
-Estou aqui para criar um site que não apenas funcione perfeitamente, mas que também impressione visualmente. Como estudante de Engenharia de Software, estou constantemente aprimorando minhas habilidades para entregar projetos de alta qualidade.
-
-Este site serve como meu repertório de habilidades e experiências. Espero que você goste da minha abordagem e do trabalho que estou compartilhando aqui. Obrigado por visitar!
-
-
+      Olá! Sou Matheus Lobo Camara, um entusiasta da programação especializado em Python, com foco no poderoso framework Django. Minha paixão e expertise estão principalmente no desenvolvimento de soluções robustas no back-end, mas também tenho sólidos conhecimentos em front-end. Estou aqui para criar um site que não apenas funcione perfeitamente, mas que também impressione visualmente. Este site serve como meu repertório de habilidades e experiências. Espero que você goste da minha abordagem e do trabalho que estou compartilhando aqui. Obrigado por visitar!
     </h4>
   </div>
 </div>
