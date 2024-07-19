@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% load custom_filters %}
 
-{% block title %}
-  Detalhes - Lobo Multimarcas
-{% endblock %}
-
 {% block content %}
 <style>
   /* Estilos para a lista de comentários */
@@ -280,7 +276,10 @@
       alertDiv.textContent = 'Calculando...';
 
       messagesDiv.appendChild(alertDiv);
-      Confirmado;
+
+      // Simulação de cálculo por 2 segundos
+      setTimeout(function () {
+        alertDiv.style.display = 'none';
 
         // Cálculo do resultado do financiamento
         const financeResultDiv = document.getElementById('finance-result');
