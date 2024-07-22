@@ -71,6 +71,9 @@
     .btn-container {
       text-align: center;
       margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .btn {
@@ -83,7 +86,8 @@
       cursor: pointer;
       transition: background-color 0.3s ease-in-out;
       text-decoration: none;
-      margin: 0 10px;
+      margin: 10px;
+      display: inline-block;
     }
 
     .btn:hover {
@@ -96,6 +100,14 @@
 
     .btn-danger:hover {
       background-color: #d2221c;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
     }
 
     .error-message {
@@ -122,6 +134,12 @@
       .btn {
         padding: 12px 24px;
         font-size: 14px;
+        width: 100%;
+        margin: 5px 0;
+      }
+
+      .btn-container {
+        flex-direction: column;
       }
     }
 
