@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="hero-section">
+<div class="hero-section" style="background-image: url('{% static 'images/LOBO.png' %}');">
     <div class="container text-center py-5 hero-text">
         <h1 class="display-4"></h1>
     </div>
@@ -64,22 +64,35 @@
         margin: 0;
         padding: 0;
     }
+
     .hero-section {
-        background-image: url('{% static "images/LOBO.png" %}');
         background-size: cover;
         background-position: center;
-        background-color: rgba(0, 0, 0, 0.1);
         height: 75vh;
         color: #ffffff;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
         margin-bottom: 30px;
+        position: relative;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Fundo de transparência */
+        z-index: 1;
     }
 
     .hero-text {
-        background-color: rgba(0.8, 0.4, 0, 0.1); /* Cor com transparência */
+        position: relative;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, 0.3); /* Cor com transparência */
         color: #c29734;
         padding: 20px;
         border-radius: 10px;
@@ -178,21 +191,25 @@
     }
 
     @media (max-width: 768px) {
-        .btn {
-            width: 100%;
-            margin-top: 10px;
+        .hero-section {
+            height: 50vh;
+        }
+
+        .hero-text {
+            padding: 10px;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
         }
 
-        .hero-section {
-            height: 50vh;
-            padding: 0;
-            justify-content: center;
-            align-items: center;
-            background-position: center;
+        .btn-lg {
+            padding: 8px 16px;
+            font-size: 1rem;
+        }
+
+        .service-card {
+            margin-bottom: 20px;
         }
     }
 </style>
