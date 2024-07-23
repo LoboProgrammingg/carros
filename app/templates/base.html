@@ -364,42 +364,7 @@
         
     }
   </style>
-  <script type="text/javascript">
-    var Tawk_API=Tawk_API||{};
-    Tawk_API.visitor = {
-      name: 'user.username',
-      // Outras informações que deseja passar
-    };
-  </script>
-  <script type="text/javascript">
-    // Inicializar Tawk_API e definir as configurações do visitante
-    var Tawk_API = Tawk_API || {};
-    var Tawk_LoadStart = new Date();
-  
-    // Função para configurar o visitante e carregar o script
-    function loadTawkScript() {
-      var s1 = document.createElement("script");
-      s1.async = true;
-      s1.src = 'https://embed.tawk.to/669ee1d432dca6db2cb3b00d/1i317pe11';
-      s1.charset = 'UTF-8';
-      s1.setAttribute('crossorigin', '*');
-      
-      // Adicionar o script ao DOM
-      var s0 = document.getElementsByTagName("script")[0];
-      s0.parentNode.insertBefore(s1, s0);
-      
-      // Configurar o visitante após o carregamento do script
-      s1.onload = function() {
-        Tawk_API.visitor = {
-          name: '{{ user.username }}', // Nome do usuário autenticado
-          // Outras informações do visitante, se necessário
-        };
-      };
-    }
-  
-    // Carregar o script do Tawk.to
-    loadTawkScript();
-  </script>
+    
 </head>
 <body>
   <header>
