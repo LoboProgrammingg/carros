@@ -151,23 +151,48 @@
         <table>
             <tr>
                 <td><label for="id_username">Username:</label></td>
-                <td><input type="text" name="username" required id="id_username" value="{{ user_form.username.value }}"></td>
+                <td>
+                    <input type="text" name="username" required id="id_username" value="{{ user_form.username.value|default_if_none:'' }}">
+                    {% if user_form.username.errors %}
+                      <div class="error">{{ user_form.username.errors }}</div>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td><label for="id_email">Email:</label></td>
-                <td><input type="email" name="email" required id="id_email" value="{{ user_form.email.value }}"></td>
+                <td>
+                    <input type="email" name="email" required id="id_email" value="{{ user_form.email.value|default_if_none:'' }}">
+                    {% if user_form.email.errors %}
+                      <div class="error">{{ user_form.email.errors }}</div>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td><label for="id_email2">Confirme o Email:</label></td>
-                <td><input type="email" name="confirm_email" required id="id_email2" value="{{ user_form.confirm_email.value }}"></td>
+                <td>
+                    <input type="email" name="confirm_email" required id="id_email2" value="{{ user_form.confirm_email.value|default_if_none:'' }}">
+                    {% if user_form.confirm_email.errors %}
+                      <div class="error">{{ user_form.confirm_email.errors }}</div>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td><label for="id_password1">Senha:</label></td>
-                <td><input type="password" name="password1" required id="id_password1"></td>
+                <td>
+                    <input type="password" name="password1" required id="id_password1">
+                    {% if user_form.password1.errors %}
+                      <div class="error">{{ user_form.password1.errors }}</div>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td><label for="id_password2">Confirme a Senha:</label></td>
-                <td><input type="password" name="password2" required id="id_password2"></td>
+                <td>
+                    <input type="password" name="password2" required id="id_password2">
+                    {% if user_form.password2.errors %}
+                      <div class="error">{{ user_form.password2.errors }}</div>
+                    {% endif %}
+                </td>
             </tr>
         </table>
         <input type="submit" value="Registrar">
@@ -181,6 +206,15 @@
 <style>
     main {
         margin-bottom: 50px;
+    }
+    .error {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 5px;
+        font-size: 14px;
     }
 </style>
 {% endblock %}
